@@ -13,8 +13,8 @@ export async function POST() {
         quantity: 1,
       },
     ],
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/pricing",
+    success_url: "https://instaintake.com/success",
+    cancel_url: "https://instaintake.com/pricing",
   });
 
   return NextResponse.json({ url: session.url });
