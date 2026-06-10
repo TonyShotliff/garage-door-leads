@@ -6,17 +6,17 @@ export default function PrivacyPolicy() {
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">1. Who We Are</h2>
-        <p>Insta Intake ("we", "us", "our") provides automated missed-call SMS notification services for home service businesses. Our website is instaintake.com.</p>
+        <p>Insta Intake (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) provides automated missed-call SMS notification services for home service businesses. Our website is instaintake.com.</p>
       </section>
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">2. Information We Collect</h2>
-        <p>We collect information you provide when subscribing to our service, including your name, email address, phone number, and business information. We also collect phone numbers of individuals who call our subscribers' business lines.</p>
+        <p>We collect information you provide when subscribing to our service, including your name, email address, phone number, and business information. We also collect phone numbers of individuals who call our subscribers&rsquo; business lines.</p>
       </section>
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">3. How We Use Your Information</h2>
-        <p>We use collected information to deliver automated SMS notifications to individuals who have called a subscriber's business line and did not receive an answer. SMS messages are sent solely to facilitate communication between the caller and the business.</p>
+        <p>We use collected information to deliver automated SMS notifications to individuals who have called a subscriber&rsquo;s business line and did not receive an answer. SMS messages are sent solely to facilitate communication between the caller and the business.</p>
       </section>
 
       <section className="mb-8">
@@ -37,4 +37,8 @@ export default function PrivacyPolicy() {
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">7. Contact Us</h2>
         <p>For privacy questions, contact us at: tony@instaintake.com</p>
+      </section>
+    </div>
+  );
+}
         
