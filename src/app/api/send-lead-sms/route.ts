@@ -5,8 +5,8 @@ export async function POST(req: NextRequest) {
   const { full_name, phone, service_type, urgency } = await req.json();
 
   const client = twilio(
-    process.env.NEXT_PUBLIC_TWILIO_ACCOUNT_SID,
-    process.env.NEXT_PUBLIC_TWILIO_AUTH_TOKEN
+    process.env.TWILIO_ACCOUNT_SID,
+    process.env.TWILIO_AUTH_TOKEN
   );
 
   const body = `New Lead: ${full_name} - ${service_type} - ${urgency} - Call: ${phone}`;
