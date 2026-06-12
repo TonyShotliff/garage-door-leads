@@ -120,6 +120,12 @@ export default function Home() {
           >
             Get Started Free
           </Link>
+          <p className="text-blue-200 text-xs leading-relaxed mt-6 max-w-sm mx-auto">
+            By signing up for Insta Intake, you consent to receive SMS messages
+            related to your account and missed-call notifications. Message and
+            data rates may apply. Reply STOP to opt out at any time, or HELP
+            for help.
+          </p>
         </div>
       </section>
 
@@ -150,17 +156,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-gray-100 px-6 py-8">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-          <span className="font-semibold text-gray-500">Insta Intake</span>
-          <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-gray-600 transition">Privacy</Link>
-            <Link href="/terms" className="hover:text-gray-600 transition">Terms</Link>
-          </div>
-        </div>
-      </footer>
 
     </div>
   );

@@ -178,17 +178,6 @@ export default function GarageDoorsLanding() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-100 px-6 py-8">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-          <span className="font-semibold text-gray-500">Insta Intake</span>
-          <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-gray-600 transition">Privacy</Link>
-            <Link href="/terms" className="hover:text-gray-600 transition">Terms</Link>
-          </div>
-        </div>
-      </footer>
-
     </div>
   );
 }
