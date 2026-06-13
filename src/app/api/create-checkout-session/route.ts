@@ -18,7 +18,8 @@ export async function POST() {
           quantity: 1,
         },
       ],
-      success_url: "https://instaintake.com/success",
+      // {CHECKOUT_SESSION_ID} is a Stripe macro — replaced with the real ID on redirect
+      success_url: "https://instaintake.com/success?session_id={CHECKOUT_SESSION_ID}",
       cancel_url: "https://instaintake.com/pricing",
     });
 

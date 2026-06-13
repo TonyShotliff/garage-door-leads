@@ -1,6 +1,14 @@
 import Link from "next/link";
 
-export default function SuccessPage() {
+export default function SuccessPage({
+  searchParams,
+}: {
+  searchParams: { session_id?: string };
+}) {
+  const onboardingHref = searchParams.session_id
+    ? `/onboarding?session_id=${searchParams.session_id}`
+    : "/onboarding";
+
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-md p-10 max-w-md w-full text-center">
@@ -13,13 +21,14 @@ export default function SuccessPage() {
         </div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">You&apos;re subscribed!</h1>
         <p className="text-gray-500 mb-8">
-          Welcome aboard. You&apos;ll start receiving missed-call SMS alerts right away.
+          Payment confirmed. Finish setting up your account so we can get your
+          missed-call SMS activated.
         </p>
         <Link
-          href="/"
+          href={onboardingHref}
           className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition text-sm"
         >
-          Back to Home
+          Complete Your Setup →
         </Link>
       </div>
     </main>
