@@ -3,7 +3,11 @@ import { NextResponse } from "next/server";
 
 export async function POST() {
   try {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+    // Explicitly use Node's HTTP client — Next.js 14 patches the global fetch
+    // in a way that breaks the Stripe SDK's retry/connection logic.
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      httpClient: Stripe.createNodeHttpClient(),
+    });
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
