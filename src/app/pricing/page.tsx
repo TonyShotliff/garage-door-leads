@@ -25,7 +25,7 @@ export default function PricingPage() {
       <div className="max-w-md w-full">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-gray-900">Simple Pricing</h1>
-          <p className="text-gray-500 mt-3">One plan. Everything you need to grow your garage door business.</p>
+          <p className="text-gray-500 mt-3">One plan. Stop losing jobs to voicemail.</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
@@ -42,11 +42,11 @@ export default function PricingPage() {
           {/* Features */}
           <div className="px-8 py-6 space-y-4">
             {[
-              "Exclusive local leads delivered to you",
-              "Real-time SMS & email notifications",
-              "Full lead details: name, phone, service type",
-              "Photo attachments from customers",
-              "Priority emergency lead alerts",
+              "Instant auto-text the moment you miss a call",
+              "Works with your existing phone number",
+              "No new app to install or number to hand out",
+              "Simple setup — running in minutes",
+              "Cancel anytime, no contracts",
             ].map((feature) => (
               <div key={feature} className="flex items-center gap-3">
                 <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
