@@ -13,13 +13,13 @@ export default function SuccessPage() {
         </div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">You&apos;re subscribed!</h1>
         <p className="text-gray-500 mb-8">
-          Welcome aboard. You&apos;ll start receiving garage door leads via SMS and email right away.
+          Welcome aboard. You&apos;ll start receiving missed-call SMS alerts right away.
         </p>
         <Link
           href="/"
           className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition text-sm"
         >
-          Go to Lead Form
+          Back to Home
         </Link>
       </div>
     </main>
