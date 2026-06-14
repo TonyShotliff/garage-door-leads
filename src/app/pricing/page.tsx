@@ -71,10 +71,10 @@ export default function PricingPage() {
               disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3.5 rounded-xl transition text-base shadow-sm"
             >
-              {loading ? "Redirecting to checkout..." : "Subscribe Now — $49/month"}
+              {loading ? "Redirecting to checkout..." : "Start My Free Trial"}
             </button>
             <p className="text-xs text-center text-gray-400 mt-3">
-              Secure payment powered by Stripe. Cancel anytime from your account.
+              Card required. $49/month after your 30-day free trial. Cancel anytime.
             </p>
           </div>
         </div>

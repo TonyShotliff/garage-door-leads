@@ -12,7 +12,7 @@ export default function GarageDoorsLanding() {
             href="/pricing"
             className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2 rounded-lg transition"
           >
-            Get Started Free
+            Try Free for 30 Days
           </Link>
         </div>
       </nav>
@@ -33,7 +33,7 @@ export default function GarageDoorsLanding() {
             href="/pricing"
             className="inline-block bg-white text-blue-700 hover:bg-blue-50 font-bold px-8 py-4 rounded-xl text-base transition shadow-md"
           >
-            Start Free — No Setup Required
+            Try Free for 30 Days
           </Link>
         </div>
       </section>
@@ -139,13 +139,13 @@ export default function GarageDoorsLanding() {
         <div className="max-w-xl mx-auto">
           <h2 className="text-3xl font-bold mb-4">Try it free for 30 days.</h2>
           <p className="text-blue-100 text-lg leading-relaxed mb-10">
-            No credit card pressure, no long-term contract. If it doesn&apos;t help you keep more garage door jobs, cancel anytime.
+            Card required at signup — you won&apos;t be charged until day 31. Cancel before then and pay nothing.
           </p>
           <Link
             href="/pricing"
             className="inline-block bg-white text-blue-700 hover:bg-blue-50 font-bold px-8 py-4 rounded-xl text-base transition shadow-md"
           >
-            Get Started Free
+            Try Free for 30 Days
           </Link>
         </div>
       </section>
