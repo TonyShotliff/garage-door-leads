@@ -1,4 +1,5 @@
 import twilio from "twilio";
+import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
 // Hardcoded for MVP — will be replaced with per-operator DB lookup
@@ -6,7 +7,6 @@ const OPERATOR_NAME = "Tony's Doors";
 const REPLY_MESSAGE =
   "Hi, this is Tony's Doors. Sorry we missed your call — how can we help? Reply here and we'll get right back to you. Reply STOP to opt out.";
 
-const FROM_NUMBER = "+18442524470";
 // A2P 10DLC messaging service — routes SMS through the registered campaign
 const MESSAGING_SERVICE_SID = "MG2da3adb97efc0172ded10944d00d328d";
 
@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
   const callerNumber = formData.get("From") as string | null;
 
   if (callerNumber) {
+    // Send auto-reply SMS
     try {
       const client = twilio(
         process.env.TWILIO_ACCOUNT_SID,
@@ -40,6 +41,20 @@ export async function POST(req: NextRequest) {
         `[${OPERATOR_NAME}] Missed-call SMS failed:`,
         err instanceof Error ? err.message : err
       );
+    }
+
+    // Log the outbound auto-reply to message_log
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+    const { error: logError } = await supabase.from("message_log").insert({
+      caller_phone: callerNumber,
+      direction: "outbound",
+      message_body: REPLY_MESSAGE,
+    });
+    if (logError) {
+      console.error(`[${OPERATOR_NAME}] message_log insert error (outbound):`, logError.message);
     }
   }
 
