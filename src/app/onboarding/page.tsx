@@ -7,6 +7,7 @@ export default async function OnboardingPage({
   searchParams: { session_id?: string };
 }) {
   let prefillEmail = "";
+  let stripeCustomerId = "";
 
   if (searchParams.session_id) {
     try {
@@ -18,8 +19,10 @@ export default async function OnboardingPage({
       );
       prefillEmail =
         session.customer_details?.email ?? session.customer_email ?? "";
+      stripeCustomerId =
+        typeof session.customer === "string" ? session.customer : "";
     } catch {
-      // Session retrieval failed — email field left blank for manual entry
+      // Session retrieval failed — fields left blank for manual entry
     }
   }
 
@@ -49,7 +52,7 @@ export default async function OnboardingPage({
             Tell us about your business so we can activate your missed-call SMS.
           </p>
         </div>
-        <OnboardingForm prefillEmail={prefillEmail} />
+        <OnboardingForm prefillEmail={prefillEmail} stripeCustomerId={stripeCustomerId} />
       </div>
     </main>
   );

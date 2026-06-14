@@ -4,8 +4,10 @@ import { useState } from "react";
 
 export default function OnboardingForm({
   prefillEmail,
+  stripeCustomerId,
 }: {
   prefillEmail: string;
+  stripeCustomerId: string;
 }) {
   const [form, setForm] = useState({
     businessName: "",
@@ -15,6 +17,8 @@ export default function OnboardingForm({
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [portalLoading, setPortalLoading] = useState(false);
+  const [portalError, setPortalError] = useState<string | null>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -45,6 +49,24 @@ export default function OnboardingForm({
     }
   }
 
+  async function handleManageSubscription() {
+    setPortalLoading(true);
+    setPortalError(null);
+    try {
+      const res = await fetch("/api/create-portal-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stripeCustomerId }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      window.location.href = data.url;
+    } catch (err) {
+      setPortalError(err instanceof Error ? err.message : "Something went wrong.");
+      setPortalLoading(false);
+    }
+  }
+
   if (submitted) {
     return (
       <div className="bg-white rounded-2xl shadow-md p-10 text-center">
@@ -66,9 +88,23 @@ export default function OnboardingForm({
           </div>
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-3">You&apos;re all set!</h2>
-        <p className="text-gray-500 leading-relaxed">
+        <p className="text-gray-500 leading-relaxed mb-8">
           Thanks! We&apos;ll be in touch shortly with next steps.
         </p>
+        {stripeCustomerId && (
+          <div>
+            <button
+              onClick={handleManageSubscription}
+              disabled={portalLoading}
+              className="text-sm text-blue-600 hover:text-blue-700 disabled:opacity-60 disabled:cursor-not-allowed underline transition"
+            >
+              {portalLoading ? "Loading..." : "Manage Subscription"}
+            </button>
+            {portalError && (
+              <p className="text-xs text-red-600 mt-2">{portalError}</p>
+            )}
+          </div>
+        )}
       </div>
     );
   }

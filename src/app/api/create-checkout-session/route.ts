@@ -19,6 +19,9 @@ export async function POST() {
         },
       ],
       // {CHECKOUT_SESSION_ID} is a Stripe macro — replaced with the real ID on redirect
+      subscription_data: {
+        trial_period_days: 30,
+      },
       success_url: "https://instaintake.com/success?session_id={CHECKOUT_SESSION_ID}",
       cancel_url: "https://instaintake.com/pricing",
     });
