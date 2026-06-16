@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import NavBar from "@/components/NavBar";
 
 // Always fetch fresh data — never statically generate this page
 export const dynamic = "force-dynamic";
@@ -61,15 +62,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Nav */}
-      <nav className="border-b border-gray-100 bg-white px-6 py-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <span className="text-xl font-bold text-blue-600 tracking-tight">
-            Insta Intake
-          </span>
-          <span className="text-sm text-gray-400">Activity Log</span>
-        </div>
-      </nav>
+      <NavBar cta={<span className="text-sm text-gray-400">Activity Log</span>} />
 
       <main className="max-w-4xl mx-auto px-6 py-12">
         {/* Header */}

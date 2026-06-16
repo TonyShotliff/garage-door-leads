@@ -1,21 +1,20 @@
 import Link from "next/link";
+import NavBar from "@/components/NavBar";
 
 export default function GarageDoorsLanding() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
 
-      {/* Nav */}
-      <nav className="border-b border-gray-100 px-6 py-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="text-xl font-bold text-blue-600 tracking-tight">Insta Intake</span>
+      <NavBar
+        cta={
           <Link
             href="/pricing"
             className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2 rounded-lg transition"
           >
             Try Free for 30 Days
           </Link>
-        </div>
-      </nav>
+        }
+      />
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white px-6 py-20 text-center">

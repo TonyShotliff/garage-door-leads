@@ -91,20 +91,28 @@ export default function OnboardingForm({
         <p className="text-gray-500 leading-relaxed mb-8">
           Thanks! We&apos;ll be in touch shortly with next steps.
         </p>
-        {stripeCustomerId && (
-          <div>
-            <button
-              onClick={handleManageSubscription}
-              disabled={portalLoading}
-              className="text-sm text-blue-600 hover:text-blue-700 disabled:opacity-60 disabled:cursor-not-allowed underline transition"
-            >
-              {portalLoading ? "Loading..." : "Manage Subscription"}
-            </button>
-            {portalError && (
-              <p className="text-xs text-red-600 mt-2">{portalError}</p>
-            )}
-          </div>
-        )}
+        <div className="space-y-3">
+          <a
+            href="/account"
+            className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition text-sm text-center shadow-sm"
+          >
+            Go to My Account
+          </a>
+          {stripeCustomerId && (
+            <div>
+              <button
+                onClick={handleManageSubscription}
+                disabled={portalLoading}
+                className="text-sm text-blue-600 hover:text-blue-700 disabled:opacity-60 disabled:cursor-not-allowed underline transition"
+              >
+                {portalLoading ? "Loading..." : "Manage Subscription"}
+              </button>
+              {portalError && (
+                <p className="text-xs text-red-600 mt-2">{portalError}</p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
