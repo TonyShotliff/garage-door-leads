@@ -20,7 +20,6 @@ type MessageRow = {
 };
 
 const INSTA_INTAKE_NUMBER = "+1 (844) 252-4470";
-const INSTA_INTAKE_DIALSTRING = "+18442524470";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
