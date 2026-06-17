@@ -9,6 +9,7 @@ type Operator = {
   business_phone: string | null;
   status: string | null;
   stripe_customer_id: string | null;
+  custom_sms_message: string | null;
 };
 
 type MessageRow = {
@@ -134,10 +135,7 @@ function SetupProgress({ status }: { status: string | null }) {
 
 // ── SMS preview card ──────────────────────────────────────────────────────────
 
-function SmsPreview({ businessName }: { businessName: string }) {
-  const displayName = businessName.trim() || "Your Business";
-  const message = `Hi, this is ${displayName}. Sorry we missed your call — how can we help? Reply here and we'll get right back to you. Reply STOP to opt out.`;
-
+function SmsPreview({ message }: { message: string }) {
   return (
     <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
       <h2 className="text-lg font-semibold text-gray-900 mb-1">What your customers receive</h2>
@@ -276,10 +274,20 @@ export default function AccountContent({
   const [saveStatus, setSaveStatus] = useState<"idle" | "saved" | "error">("idle");
   const [saveError, setSaveError] = useState<string | null>(null);
 
+  const [customSmsMessage, setCustomSmsMessage] = useState(operator?.custom_sms_message ?? "");
+  const [savingMessage, setSavingMessage] = useState(false);
+  const [messageSaveStatus, setMessageSaveStatus] = useState<"idle" | "saved" | "error">("idle");
+  const [messageSaveError, setMessageSaveError] = useState<string | null>(null);
+
   const [portalLoading, setPortalLoading] = useState(false);
   const [portalError, setPortalError] = useState<string | null>(null);
 
   const isActive = operator?.status === "active" || operator?.status === "live";
+
+  // What customers will actually receive — custom message takes priority
+  const displayName = businessName.trim() || "Your Business";
+  const defaultSmsText = `Hi, this is ${displayName}. Sorry we missed your call — how can we help? Reply here and we'll get right back to you. Reply STOP to opt out.`;
+  const previewMessage = customSmsMessage.trim() ? customSmsMessage.trim() : defaultSmsText;
 
   async function handleSaveProfile(e: React.FormEvent) {
     e.preventDefault();
@@ -300,6 +308,28 @@ export default function AccountContent({
       setSaveError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleSaveMessage(e: React.FormEvent) {
+    e.preventDefault();
+    setSavingMessage(true);
+    setMessageSaveStatus("idle");
+    setMessageSaveError(null);
+    try {
+      const res = await fetch("/api/account/update-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customSmsMessage }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setMessageSaveStatus("saved");
+    } catch (err) {
+      setMessageSaveStatus("error");
+      setMessageSaveError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setSavingMessage(false);
     }
   }
 
@@ -412,13 +442,60 @@ export default function AccountContent({
           </form>
         </section>
 
-        {/* 3 — SMS preview */}
-        <SmsPreview businessName={businessName} />
+        {/* 3 — Customize SMS message */}
+        <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-1">Customize Your Message</h2>
+          <p className="text-sm text-gray-500 mb-4">
+            Personalize the text your customers receive when you miss their call.
+            Leave blank to use the default message with your business name.
+          </p>
+          <form onSubmit={handleSaveMessage} className="space-y-3">
+            <div>
+              <textarea
+                value={customSmsMessage}
+                onChange={(e) => {
+                  setCustomSmsMessage(e.target.value);
+                  setMessageSaveStatus("idle");
+                }}
+                placeholder={defaultSmsText}
+                rows={3}
+                maxLength={320}
+                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none text-sm"
+              />
+              <p
+                className={`text-xs mt-1 text-right ${
+                  customSmsMessage.length > 160 ? "text-amber-500 font-medium" : "text-gray-400"
+                }`}
+              >
+                {customSmsMessage.length} / 160
+                {customSmsMessage.length > 160 ? " — may send as 2 messages" : ""}
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                type="submit"
+                disabled={savingMessage}
+                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm shadow-sm"
+              >
+                {savingMessage ? "Saving..." : "Save Message"}
+              </button>
+              {messageSaveStatus === "saved" && (
+                <span className="text-sm text-green-600 font-medium">Saved!</span>
+              )}
+              {messageSaveStatus === "error" && (
+                <span className="text-sm text-red-600">{messageSaveError}</span>
+              )}
+            </div>
+          </form>
+        </section>
 
-        {/* 4 — Call forwarding instructions */}
+        {/* 4 — SMS preview (live-updates as operator types) */}
+        <SmsPreview message={previewMessage} />
+
+        {/* 5 — Call forwarding instructions */}
         <ForwardingInstructions />
 
-        {/* 5 — Subscription */}
+        {/* 6 — Subscription */}
         <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-1">Subscription</h2>
           <p className="text-sm text-gray-500 mb-4">
@@ -442,7 +519,7 @@ export default function AccountContent({
           )}
         </section>
 
-        {/* 6 — Activity log */}
+        {/* 7 — Activity log */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-1">Recent Activity</h2>
           <p className="text-sm text-gray-500 mb-5">Missed calls and customer replies</p>

@@ -2,27 +2,53 @@ import twilio from "twilio";
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
-// Hardcoded for MVP — will be replaced with per-operator DB lookup
-const OPERATOR_NAME = "Tony's Doors";
-const REPLY_MESSAGE =
-  "Hi, this is Tony's Doors. Sorry we missed your call — how can we help? Reply here and we'll get right back to you. Reply STOP to opt out.";
-
 // A2P 10DLC messaging service — routes SMS through the registered campaign
 const MESSAGING_SERVICE_SID = "MG2da3adb97efc0172ded10944d00d328d";
 
-// TwiML that declines the call immediately.
-// Twilio's webhook fires on every incoming call — we can't "let it ring" without
-// forwarding it somewhere. <Reject reason="busy"> gives the caller a busy signal
-// and never answers, which is the right MVP behavior since we're not yet
-// forwarding to the operator's real number.
+// TwiML that declines the call immediately with a busy signal
 const REJECT_TWIML = `<?xml version="1.0" encoding="UTF-8"?><Response><Reject reason="busy"/></Response>`;
+
+function buildDefaultMessage(businessName: string) {
+  return `Hi, this is ${businessName}. Sorry we missed your call — how can we help? Reply here and we'll get right back to you. Reply STOP to opt out.`;
+}
+
+const GENERIC_FALLBACK =
+  "Hi, sorry we missed your call. We'll get right back to you. Reply STOP to opt out.";
 
 export async function POST(req: NextRequest) {
   // Twilio sends voice webhooks as application/x-www-form-urlencoded
   const formData = await req.formData();
   const callerNumber = formData.get("From") as string | null;
+  // "To" is the Twilio number that received the call — used to identify which operator
+  const toNumber = formData.get("To") as string | null;
 
   if (callerNumber) {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
+    // Look up the operator whose business_phone matches the Twilio number that received the call
+    let replyMessage = GENERIC_FALLBACK;
+    let operatorId: string | null = null;
+    let operatorLabel = "unknown";
+
+    if (toNumber) {
+      const { data: operator } = await supabase
+        .from("operators")
+        .select("id, business_name, custom_sms_message")
+        .eq("business_phone", toNumber)
+        .maybeSingle();
+
+      if (operator) {
+        operatorId = operator.id;
+        operatorLabel = operator.business_name ?? "operator";
+        replyMessage = operator.custom_sms_message?.trim()
+          ? operator.custom_sms_message.trim()
+          : buildDefaultMessage(operator.business_name ?? "Us");
+      }
+    }
+
     // Send auto-reply SMS
     try {
       const client = twilio(
@@ -30,31 +56,28 @@ export async function POST(req: NextRequest) {
         process.env.TWILIO_AUTH_TOKEN
       );
       await client.messages.create({
-        body: REPLY_MESSAGE,
+        body: replyMessage,
         messagingServiceSid: MESSAGING_SERVICE_SID,
         to: callerNumber,
       });
-      console.log(`[${OPERATOR_NAME}] Missed-call SMS sent to ${callerNumber}`);
+      console.log(`[${operatorLabel}] Missed-call SMS sent to ${callerNumber}`);
     } catch (err) {
-      // Log the error but don't let it crash — TwiML response must always be returned
+      // Log the error but don't crash — TwiML response must always be returned
       console.error(
-        `[${OPERATOR_NAME}] Missed-call SMS failed:`,
+        `[${operatorLabel}] Missed-call SMS failed:`,
         err instanceof Error ? err.message : err
       );
     }
 
     // Log the outbound auto-reply to message_log
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
     const { error: logError } = await supabase.from("message_log").insert({
       caller_phone: callerNumber,
       direction: "outbound",
-      message_body: REPLY_MESSAGE,
+      message_body: replyMessage,
+      ...(operatorId ? { operator_id: operatorId } : {}),
     });
     if (logError) {
-      console.error(`[${OPERATOR_NAME}] message_log insert error (outbound):`, logError.message);
+      console.error(`[${operatorLabel}] message_log insert error (outbound):`, logError.message);
     }
   }
 

@@ -31,7 +31,7 @@ export default async function AccountPage() {
 
   const { data: operator } = await service
     .from("operators")
-    .select("business_name, business_phone, status, stripe_customer_id")
+    .select("business_name, business_phone, status, stripe_customer_id, custom_sms_message")
     .eq("email", user.email!)
     .maybeSingle();
 

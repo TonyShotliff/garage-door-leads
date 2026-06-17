@@ -32,13 +32,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { businessName, businessPhone } = await req.json();
+  const { businessName, businessPhone, customSmsMessage } = await req.json();
 
-  if (!businessName || !businessPhone) {
-    return NextResponse.json(
-      { error: "Business name and phone are required." },
-      { status: 400 }
-    );
+  // Build update payload from whatever fields were sent — all are optional
+  const payload: Record<string, string | null> = {};
+  if (businessName !== undefined) payload.business_name = businessName;
+  if (businessPhone !== undefined) payload.business_phone = businessPhone;
+  // Empty string → null so we fall back to the default message in the webhook
+  if (customSmsMessage !== undefined) payload.custom_sms_message = customSmsMessage || null;
+
+  if (Object.keys(payload).length === 0) {
+    return NextResponse.json({ error: "Nothing to update." }, { status: 400 });
   }
 
   // Use service role to write — operators table is not publicly writable
@@ -49,7 +53,7 @@ export async function POST(req: NextRequest) {
 
   const { error } = await service
     .from("operators")
-    .update({ business_name: businessName, business_phone: businessPhone })
+    .update(payload)
     .eq("email", user.email!);
 
   if (error) {
