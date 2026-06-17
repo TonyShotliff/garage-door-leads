@@ -19,6 +19,9 @@ type MessageRow = {
   message_body: string;
 };
 
+const INSTA_INTAKE_NUMBER = "+1 (844) 252-4470";
+const INSTA_INTAKE_DIALSTRING = "+18442524470";
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
@@ -44,6 +47,219 @@ function DirectionBadge({ direction }: { direction: "inbound" | "outbound" }) {
   );
 }
 
+// ── Setup progress bar ────────────────────────────────────────────────────────
+
+type StepState = "complete" | "current" | "upcoming";
+
+function StepIcon({ state }: { state: StepState }) {
+  if (state === "complete") {
+    return (
+      <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+    );
+  }
+  if (state === "current") {
+    return (
+      <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0">
+        <div className="w-2.5 h-2.5 rounded-full bg-white" />
+      </div>
+    );
+  }
+  return (
+    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+      <div className="w-2.5 h-2.5 rounded-full bg-gray-400" />
+    </div>
+  );
+}
+
+function SetupProgress({ status }: { status: string | null }) {
+  const isLive = status === "live";
+
+  const steps: { label: string; sublabel: string; state: StepState }[] = [
+    {
+      label: "Account Created",
+      sublabel: "You're signed up and ready.",
+      state: "complete",
+    },
+    {
+      label: "SMS Activation",
+      sublabel: isLive
+        ? "Your SMS line is active."
+        : "We're setting up your SMS line — usually 1–3 days.",
+      state: isLive ? "complete" : "current",
+    },
+    {
+      label: "You're Live",
+      sublabel: "Missed calls trigger instant auto-texts.",
+      state: isLive ? "complete" : "upcoming",
+    },
+  ];
+
+  return (
+    <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+      <h2 className="text-lg font-semibold text-gray-900 mb-5">Setup Progress</h2>
+      <div className="flex items-start gap-0">
+        {steps.map((step, i) => (
+          <div key={step.label} className="flex-1 flex flex-col items-center relative">
+            {/* Connector line left */}
+            {i > 0 && (
+              <div
+                className={`absolute top-4 right-1/2 w-full h-0.5 -translate-y-1/2 ${
+                  steps[i - 1].state === "complete" ? "bg-green-300" : "bg-gray-200"
+                }`}
+                style={{ left: "-50%", width: "100%" }}
+              />
+            )}
+            <div className="relative z-10">
+              <StepIcon state={step.state} />
+            </div>
+            <p
+              className={`text-xs font-semibold mt-2 text-center ${
+                step.state === "upcoming" ? "text-gray-400" : "text-gray-800"
+              }`}
+            >
+              {step.label}
+            </p>
+            <p className="text-xs text-gray-400 mt-0.5 text-center leading-tight px-1">
+              {step.sublabel}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ── SMS preview card ──────────────────────────────────────────────────────────
+
+function SmsPreview({ businessName }: { businessName: string }) {
+  const displayName = businessName.trim() || "Your Business";
+  const message = `Hi, this is ${displayName}. Sorry we missed your call — how can we help? Reply here and we'll get right back to you. Reply STOP to opt out.`;
+
+  return (
+    <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+      <h2 className="text-lg font-semibold text-gray-900 mb-1">What your customers receive</h2>
+      <p className="text-sm text-gray-500 mb-5">
+        This message is sent automatically the moment you miss a call.
+      </p>
+
+      {/* Phone mockup */}
+      <div className="bg-gray-50 rounded-xl px-4 py-5">
+        <div className="flex justify-start">
+          <div className="max-w-[80%] bg-gray-200 text-gray-900 text-sm leading-relaxed px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm">
+            {message}
+          </div>
+        </div>
+        <p className="text-xs text-gray-400 mt-2 ml-1">
+          From: {INSTA_INTAKE_NUMBER}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// ── Call forwarding instructions ──────────────────────────────────────────────
+
+type PhoneType = "iphone" | "android" | "landline";
+
+const FORWARDING_INSTRUCTIONS: { id: PhoneType; label: string; steps: string[] }[] = [
+  {
+    id: "iphone",
+    label: "iPhone",
+    steps: [
+      `Option A — Settings app: Settings → Phone → Call Forwarding → turn on → enter ${INSTA_INTAKE_NUMBER}`,
+      `Option B — Dial code: Open Phone app, dial *61*${INSTA_INTAKE_DIALSTRING}# and press Call.`,
+    ],
+  },
+  {
+    id: "android",
+    label: "Android",
+    steps: [
+      `Open the Phone app → tap the three-dot menu → Settings → Supplemental services (or Calls).`,
+      `Tap "Forward when unanswered" → enter ${INSTA_INTAKE_NUMBER} → Save.`,
+      `(Menu labels vary by manufacturer — look for "Call Forwarding" if you don't see Supplemental services.)`,
+    ],
+  },
+  {
+    id: "landline",
+    label: "Landline / Carrier",
+    steps: [
+      `Call your phone carrier's support line and ask to set up conditional call forwarding on no-answer to ${INSTA_INTAKE_NUMBER}.`,
+      `Most carriers can do this in a few minutes over the phone.`,
+    ],
+  },
+];
+
+function ForwardingInstructions() {
+  const [open, setOpen] = useState<PhoneType | null>(null);
+
+  function toggle(id: PhoneType) {
+    setOpen((prev) => (prev === id ? null : id));
+  }
+
+  return (
+    <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+      <h2 className="text-lg font-semibold text-gray-900 mb-1">How to activate on your phone</h2>
+      <p className="text-sm text-gray-500 mb-2">
+        Insta Intake works when your business calls forward to your Insta Intake number on no-answer.
+        Here&apos;s how to set it up:
+      </p>
+
+      {/* Number callout */}
+      <div className="flex items-center gap-3 bg-blue-50 rounded-xl px-4 py-3 mb-5">
+        <svg className="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        </svg>
+        <div>
+          <p className="text-xs text-blue-600 font-medium uppercase tracking-wide">Your Insta Intake number</p>
+          <p className="text-blue-900 font-bold text-lg tracking-wide">{INSTA_INTAKE_NUMBER}</p>
+        </div>
+      </div>
+
+      {/* Accordion */}
+      <div className="space-y-2">
+        {FORWARDING_INSTRUCTIONS.map(({ id, label, steps }) => (
+          <div key={id} className="border border-gray-100 rounded-xl overflow-hidden">
+            <button
+              onClick={() => toggle(id)}
+              className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50 transition"
+            >
+              <span className="text-sm font-semibold text-gray-800">{label}</span>
+              <svg
+                className={`w-4 h-4 text-gray-400 transition-transform ${open === id ? "rotate-180" : ""}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {open === id && (
+              <div className="px-4 pb-4 space-y-2">
+                {steps.map((step, i) => (
+                  <div key={i} className="flex gap-2.5">
+                    <span className="text-blue-500 font-bold text-xs mt-0.5 flex-shrink-0">{i + 1}.</span>
+                    <p className="text-sm text-gray-600 leading-relaxed">{step}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <p className="text-xs text-gray-400 mt-4 leading-relaxed">
+        Only forwards when you don&apos;t answer — your phone still rings normally first.
+      </p>
+    </section>
+  );
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
+
 export default function AccountContent({
   userEmail,
   operator,
@@ -64,7 +280,7 @@ export default function AccountContent({
   const [portalLoading, setPortalLoading] = useState(false);
   const [portalError, setPortalError] = useState<string | null>(null);
 
-  const isActive = operator?.status === "active";
+  const isActive = operator?.status === "active" || operator?.status === "live";
 
   async function handleSaveProfile(e: React.FormEvent) {
     e.preventDefault();
@@ -151,7 +367,10 @@ export default function AccountContent({
           </span>
         </div>
 
-        {/* Edit profile */}
+        {/* 1 — Setup progress */}
+        <SetupProgress status={operator?.status ?? null} />
+
+        {/* 2 — Business profile */}
         <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-5">Business Profile</h2>
           <form onSubmit={handleSaveProfile} className="space-y-4">
@@ -194,7 +413,13 @@ export default function AccountContent({
           </form>
         </section>
 
-        {/* Subscription */}
+        {/* 3 — SMS preview */}
+        <SmsPreview businessName={businessName} />
+
+        {/* 4 — Call forwarding instructions */}
+        <ForwardingInstructions />
+
+        {/* 5 — Subscription */}
         <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-1">Subscription</h2>
           <p className="text-sm text-gray-500 mb-4">
@@ -218,7 +443,7 @@ export default function AccountContent({
           )}
         </section>
 
-        {/* Activity log */}
+        {/* 6 — Activity log */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-1">Recent Activity</h2>
           <p className="text-sm text-gray-500 mb-5">Missed calls and customer replies</p>
