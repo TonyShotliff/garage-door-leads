@@ -170,8 +170,8 @@ const FORWARDING_INSTRUCTIONS: { id: PhoneType; label: string; steps: string[] }
     id: "iphone",
     label: "iPhone",
     steps: [
-      `Option A — Settings app: Settings → Phone → Call Forwarding → turn on → enter ${INSTA_INTAKE_NUMBER}`,
-      `Option B — Dial code: Open Phone app, dial *61*${INSTA_INTAKE_DIALSTRING}# and press Call.`,
+      `Option A — Dial code (easiest): Open your Phone app, dial *61*+18442524470# and press Call. You'll hear a confirmation tone.`,
+      `Option B — Contact your carrier: Call your carrier's support line and ask them to set up "conditional call forwarding on no-answer" to ${INSTA_INTAKE_NUMBER}.`,
     ],
   },
   {
