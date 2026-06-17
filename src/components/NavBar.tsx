@@ -38,12 +38,22 @@ export default function NavBar({ cta }: NavBarProps) {
           {cta}
           {/* Render nothing while auth state loads to avoid Sign In → My Account flash */}
           {userEmail === undefined ? null : userEmail ? (
-            <Link
-              href="/account"
-              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition"
-            >
-              My Account
-            </Link>
+            <>
+              {userEmail === "tony@instaintake.com" && (
+                <Link
+                  href="/admin"
+                  className="text-sm font-medium text-gray-600 hover:text-blue-600 transition"
+                >
+                  Admin
+                </Link>
+              )}
+              <Link
+                href="/account"
+                className="text-sm font-medium text-gray-600 hover:text-blue-600 transition"
+              >
+                My Account
+              </Link>
+            </>
           ) : (
             <Link
               href="/account/login"
