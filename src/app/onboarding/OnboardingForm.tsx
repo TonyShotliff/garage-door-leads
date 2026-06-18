@@ -152,6 +152,9 @@ export default function OnboardingForm({
             The number your customers already call — we&apos;ll connect this to
             your missed-call SMS.
           </p>
+          <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+            When a customer calls your business number and you miss it, they will receive one automated SMS from your business via Insta Intake. Message and data rates may apply. Customers can reply <strong>STOP</strong> to opt out at any time.
+          </p>
         </div>
 
         <div>

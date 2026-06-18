@@ -3,7 +3,14 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(npm run:*)",
-      "Bash(npx kill-port:*)"
+      "Bash(npx kill-port:*)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(vercel logs *)",
+      "Bash(npx vercel *)",
+      "Bash(python3 -c \"import sys,json; lines=[l for l in sys.stdin if l.strip\\(\\)]; [print\\(json.loads\\(l\\).get\\('requestPath',''\\)\\) for l in lines if 'webhook' in l.lower\\(\\) or 'stripe' in json.loads\\(l\\).get\\('requestPath',''\\).lower\\(\\)]\")",
+      "Bash(git commit *)"
     ]
   }
 }

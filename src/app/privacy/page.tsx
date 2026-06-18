@@ -20,8 +20,16 @@ export default function PrivacyPolicy() {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-3">4. SMS Messaging</h2>
-        <p>By calling a business that uses Insta Intake, you may receive a single automated SMS message. Message and data rates may apply. You can opt out at any time by replying STOP. For help, reply HELP.</p>
+        <h2 className="text-xl font-semibold mb-3">4. SMS Messaging and Consent</h2>
+        <p className="mb-3">When an individual places a phone call to a business that uses Insta Intake and that call goes unanswered, the act of placing that call constitutes implied consent to receive a single automated SMS message from that business via Insta Intake. The SMS is sent solely to facilitate continued communication between the caller and the business they contacted.</p>
+        <p className="mb-3">Insta Intake subscribers (business operators) are notified of this SMS practice through our Terms of Service and onboarding process prior to activating their account.</p>
+        <ul className="list-disc pl-5 space-y-2 text-gray-700">
+          <li>Message and data rates may apply.</li>
+          <li>To opt out of future messages, reply <strong>STOP</strong> to any message you receive.</li>
+          <li>For help, reply <strong>HELP</strong>.</li>
+          <li>No additional opt-in is required beyond the call itself.</li>
+          <li>Message frequency: one message per missed call.</li>
+        </ul>
       </section>
 
       <section className="mb-8">
@@ -36,9 +44,14 @@ export default function PrivacyPolicy() {
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">7. Contact Us</h2>
-        <p>For privacy questions, contact us at: tony@instaintake.com</p>
+        <p className="mb-2">For privacy questions, contact us at:</p>
+        <address className="not-italic text-gray-700 space-y-1">
+          <p>Insta Intake</p>
+          <p>500 Mack Rd</p>
+          <p>Ashland, WI 54806</p>
+          <p><a href="mailto:tony@instaintake.com" className="text-blue-600 hover:underline">tony@instaintake.com</a></p>
+        </address>
       </section>
     </div>
   );
 }
-        
