@@ -123,5 +123,33 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Send signup notification to Tony
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: "tony@instaintake.com",
+      to: "tony@instaintake.com",
+      subject: `New signup: ${businessName}`,
+      html: `
+        <p style="font-family:sans-serif;font-size:15px;color:#111827;">
+          <strong>New operator signed up.</strong>
+        </p>
+        <table style="font-family:sans-serif;font-size:14px;color:#374151;border-collapse:collapse;">
+          <tr><td style="padding:4px 16px 4px 0;font-weight:600;">Business:</td><td>${businessName}</td></tr>
+          <tr><td style="padding:4px 16px 4px 0;font-weight:600;">Phone:</td><td>${businessPhone}</td></tr>
+          <tr><td style="padding:4px 16px 4px 0;font-weight:600;">Email:</td><td>${email}</td></tr>
+        </table>
+        <p style="font-family:sans-serif;font-size:13px;color:#6b7280;margin-top:24px;">
+          View in <a href="https://www.instaintake.com/admin">admin panel</a>.
+        </p>
+      `,
+    });
+  } catch (notifyErr) {
+    console.error(
+      "Signup notification failed:",
+      notifyErr instanceof Error ? notifyErr.message : notifyErr
+    );
+  }
+
   return NextResponse.json({ success: true });
 }
