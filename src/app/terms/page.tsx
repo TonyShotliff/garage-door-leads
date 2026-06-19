@@ -1,4 +1,4 @@
-export default function TermsOfService() {
+export default function Terms() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-bold mb-8">Terms of Service</h1>
@@ -20,13 +20,22 @@ export default function TermsOfService() {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-3">4. SMS Compliance</h2>
-        <p>All SMS messages sent through Insta Intake include opt-out instructions. Recipients may reply STOP at any time to stop receiving messages. Subscribers must honor all opt-out requests immediately.</p>
+        <h2 className="text-xl font-semibold mb-3">4. SMS Compliance and Consent</h2>
+        <p className="mb-3">When an individual places a phone call to a business that uses Insta Intake and that call goes unanswered, the act of placing that call constitutes implied consent to receive a single automated SMS message from that business via Insta Intake. The SMS is sent solely to facilitate continued communication between the caller and the business they contacted.</p>
+        <p className="mb-3">By activating Insta Intake on their business number, subscribers acknowledge and agree that:</p>
+        <ul className="list-disc pl-5 space-y-2 text-gray-700">
+          <li>Their customers may receive one automated SMS per missed call.</li>
+          <li>All SMS messages sent through Insta Intake include opt-out instructions.</li>
+          <li>Recipients may reply STOP at any time to stop receiving messages.</li>
+          <li>Subscribers must honor all opt-out requests immediately.</li>
+          <li>Message and data rates may apply to recipients.</li>
+          <li>Message frequency is one message per missed call.</li>
+        </ul>
       </section>
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">5. Payment</h2>
-        <p>Insta Intake is billed at $49 per month. Payments are processed securely through Stripe. You may cancel at any time. No refunds are issued for partial months.</p>
+        <p>Insta Intake is billed at $49 per month after a 30-day free trial. Payments are processed securely through Stripe. You may cancel at any time. No refunds are issued for partial months.</p>
       </section>
 
       <section className="mb-8">
@@ -41,7 +50,13 @@ export default function TermsOfService() {
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">8. Contact</h2>
-        <p>For questions about these terms, contact us at: tony@instaintake.com</p>
+        <p className="mb-2">For questions about these terms, contact us at:</p>
+        <address className="not-italic text-gray-700 space-y-1">
+          <p>Insta Intake</p>
+          <p>500 Mack Rd</p>
+          <p>Ashland, WI 54806</p>
+          <p><a href="mailto:tony@instaintake.com" className="text-blue-600 hover:underline">tony@instaintake.com</a></p>
+        </address>
       </section>
     </div>
   );
