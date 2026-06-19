@@ -8,6 +8,7 @@ export default function Contact() {
         <div>
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Business</h2>
           <p className="text-gray-900 font-medium">Insta Intake</p>
+          <p className="text-gray-500 text-sm">Operated by Anthony M. Shotliff</p>
         </div>
 
         <div>

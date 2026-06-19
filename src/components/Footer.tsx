@@ -13,6 +13,7 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-400 pt-4 border-t border-gray-100">
           <div className="flex flex-col items-center sm:items-start gap-1">
             <span className="font-semibold text-gray-500">Insta Intake</span>
+            <span className="text-xs text-gray-400">Operated by Anthony M. Shotliff</span>
             <span className="text-xs text-gray-400">500 Mack Rd, Ashland, WI 54806</span>
           </div>
           <div className="flex flex-wrap items-center gap-6 justify-center">
