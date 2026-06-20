@@ -158,32 +158,33 @@ function SmsPreview({ message }: { message: string }) {
 
 // ── Call forwarding instructions ──────────────────────────────────────────────
 
-type PhoneType = "iphone" | "android" | "landline";
+type PhoneType = "verizon" | "att-tmobile" | "other";
 
 const FORWARDING_INSTRUCTIONS: { id: PhoneType; label: string; steps: string[] }[] = [
   {
-    id: "iphone",
-    label: "iPhone",
+    id: "verizon",
+    label: "Verizon",
     steps: [
-      `Option A — Dial code (easiest): Open your Phone app, dial *61*+18442524470# and press Call. You'll hear a confirmation tone.`,
-      `Option B — Contact your carrier: Call your carrier's support line and ask them to set up "conditional call forwarding on no-answer" to ${INSTA_INTAKE_NUMBER}.`,
+      `Open your Phone app and dial *7118442524470 — no # at the end.`,
+      `Press Call. You should hear a confirmation tone (it may sound like a brief busy signal) confirming forwarding is active.`,
+      `To turn it off later, dial *73 and press Call.`,
     ],
   },
   {
-    id: "android",
-    label: "Android",
+    id: "att-tmobile",
+    label: "AT&T / T-Mobile",
     steps: [
-      `Open the Phone app → tap the three-dot menu → Settings → Supplemental services (or Calls).`,
-      `Tap "Forward when unanswered" → enter ${INSTA_INTAKE_NUMBER} → Save.`,
-      `(Menu labels vary by manufacturer — look for "Call Forwarding" if you don't see Supplemental services.)`,
+      `Open your Phone app and dial *61*18442524470#.`,
+      `Press Call. You should hear a confirmation tone confirming forwarding is active.`,
+      `To turn it off later, dial ##61# and press Call.`,
     ],
   },
   {
-    id: "landline",
-    label: "Landline / Carrier",
+    id: "other",
+    label: "Other carriers",
     steps: [
-      `Call your phone carrier's support line and ask to set up conditional call forwarding on no-answer to ${INSTA_INTAKE_NUMBER}.`,
-      `Most carriers can do this in a few minutes over the phone.`,
+      `Call your carrier's support line and ask them to set up "conditional call forwarding on no-answer" to ${INSTA_INTAKE_NUMBER}.`,
+      `Most carriers can do this in a few minutes over the phone, or may have their own app or settings menu for it.`,
     ],
   },
 ];
