@@ -69,11 +69,11 @@ export default function OnboardingForm({
 
   if (submitted) {
     return (
-      <div className="bg-white rounded-2xl shadow-md p-10 text-center">
+      <div className="bg-white rounded-2xl p-10 text-center">
         <div className="flex justify-center mb-4">
-          <div className="bg-green-100 rounded-full p-4">
+          <div className="bg-emerald-50 rounded-full p-4">
             <svg
-              className="w-10 h-10 text-green-600"
+              className="w-10 h-10 text-emerald-700"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -94,7 +94,7 @@ export default function OnboardingForm({
         <div className="space-y-3">
           <a
             href="/account"
-            className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition text-sm text-center shadow-sm"
+            className="block w-full bg-[#D85A30] hover:bg-[#c14d26] text-white font-semibold py-3 rounded-lg transition text-sm text-center"
           >
             Go to My Account
           </a>
@@ -103,7 +103,7 @@ export default function OnboardingForm({
               <button
                 onClick={handleManageSubscription}
                 disabled={portalLoading}
-                className="text-sm text-blue-600 hover:text-blue-700 disabled:opacity-60 disabled:cursor-not-allowed underline transition"
+                className="text-sm text-gray-600 hover:text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed underline transition"
               >
                 {portalLoading ? "Loading..." : "Manage Subscription"}
               </button>
@@ -118,11 +118,11 @@ export default function OnboardingForm({
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-8">
+    <div className="bg-white rounded-2xl p-8">
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Business Name <span className="text-red-500">*</span>
+            Business Name <span className="text-[#993C1D]">*</span>
           </label>
           <input
             type="text"
@@ -131,13 +131,13 @@ export default function OnboardingForm({
             onChange={handleChange}
             required
             placeholder="Ace Garage Door Co."
-            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D85A30] focus:border-transparent transition"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Business Phone Number <span className="text-red-500">*</span>
+            Business Phone Number <span className="text-[#993C1D]">*</span>
           </label>
           <input
             type="tel"
@@ -146,7 +146,7 @@ export default function OnboardingForm({
             onChange={handleChange}
             required
             placeholder="(555) 000-0000"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D85A30] focus:border-transparent transition"
           />
           <p className="text-xs text-gray-400 mt-1">
             The number your customers already call — we&apos;ll connect this to
@@ -159,7 +159,7 @@ export default function OnboardingForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email Address <span className="text-red-500">*</span>
+            Email Address <span className="text-[#993C1D]">*</span>
           </label>
           <input
             type="email"
@@ -168,7 +168,7 @@ export default function OnboardingForm({
             onChange={handleChange}
             required
             placeholder="you@example.com"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D85A30] focus:border-transparent transition"
           />
           {prefillEmail && (
             <p className="text-xs text-gray-400 mt-1">
@@ -186,7 +186,7 @@ export default function OnboardingForm({
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition text-base shadow-sm"
+          className="w-full bg-[#D85A30] hover:bg-[#c14d26] active:bg-[#a8421f] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition text-base"
         >
           {submitting ? "Saving..." : "Complete Setup"}
         </button>
