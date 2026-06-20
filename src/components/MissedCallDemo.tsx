@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 
 export default function MissedCallDemo() {
-  const [stage, setStage] = useState<"idle" | "ringing" | "texted" | "replied">("idle");
+  const [stage, setStage] = useState<"idle" | "ringing" | "texted" | "replied">("replied");
   const timeouts = useRef<NodeJS.Timeout[]>([]);
 
   function clearTimers() {
@@ -13,27 +13,28 @@ export default function MissedCallDemo() {
 
   function playSequence() {
     clearTimers();
-    setStage("ringing");
+    setStage("idle");
     timeouts.current.push(
-      setTimeout(() => setStage("texted"), 1200),
-      setTimeout(() => setStage("replied"), 2400)
+      setTimeout(() => setStage("ringing"), 50),
+      setTimeout(() => setStage("texted"), 1250),
+      setTimeout(() => setStage("replied"), 2450)
     );
   }
 
-  function resetSequence() {
+  function resetToRestState() {
     clearTimers();
-    setStage("idle");
+    setStage("replied");
   }
 
   return (
     <div
       onMouseEnter={playSequence}
-      onMouseLeave={resetSequence}
+      onMouseLeave={resetToRestState}
       onFocus={playSequence}
-      onBlur={resetSequence}
+      onBlur={resetToRestState}
       tabIndex={0}
       className="bg-gray-900 rounded-2xl p-7 motion-reduce:cursor-default cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-      aria-label="Demo: hover to see a missed call automatically trigger a text message"
+      aria-label="Demo: a missed call automatically triggers a text message. Hover to replay."
     >
       <div className="bg-white rounded-xl p-4 max-w-xs mx-auto min-h-[320px] flex flex-col justify-end relative overflow-hidden">
         <div
@@ -75,7 +76,7 @@ export default function MissedCallDemo() {
 
         {stage === "idle" && (
           <p className="text-center text-xs text-gray-400 motion-reduce:hidden">
-            Hover to see it happen
+            Hover to replay
           </p>
         )}
       </div>
