@@ -19,8 +19,6 @@ export async function POST(req: NextRequest) {
   // Twilio sends voice webhooks as application/x-www-form-urlencoded
   const formData = await req.formData();
   const callerNumber = formData.get("From") as string | null;
-  // "To" is the Twilio number that received the call — used to identify which operator
-  const toNumber = formData.get("To") as string | null;
 
   if (callerNumber) {
     const supabase = createClient(
@@ -28,25 +26,37 @@ export async function POST(req: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
-    // Look up the operator whose business_phone matches the Twilio number that received the call
     let replyMessage = GENERIC_FALLBACK;
     let operatorId: string | null = null;
     let operatorLabel = "unknown";
 
-    if (toNumber) {
-      const { data: operator } = await supabase
-        .from("operators")
-        .select("id, business_name, custom_sms_message")
-        .eq("business_phone", toNumber)
-        .maybeSingle();
+    // MVP NOTE: there is currently one shared Twilio number for all operators.
+    // Twilio's webhook payload has no field that identifies which operator's
+    // own business line was forwarded — "To" is always this one shared
+    // number, never the operator's business_phone. Matching business_phone
+    // against "To" (the old approach) can never succeed and silently drops
+    // every call to the generic fallback with no operator_id, meaning it
+    // never shows up in anyone's /account activity feed either.
+    //
+    // Until each operator has their own dedicated Twilio number (real fix —
+    // store it as operators.twilio_number and match on that), this picks
+    // the single active operator as a stand-in. This only works correctly
+    // with one real operator at a time. Before onboarding a second
+    // concurrent live operator, this needs real per-operator number
+    // routing built first.
+    const { data: operator } = await supabase
+      .from("operators")
+      .select("id, business_name, custom_sms_message")
+      .eq("status", "live")
+      .limit(1)
+      .maybeSingle();
 
-      if (operator) {
-        operatorId = operator.id;
-        operatorLabel = operator.business_name ?? "operator";
-        replyMessage = operator.custom_sms_message?.trim()
-          ? operator.custom_sms_message.trim()
-          : buildDefaultMessage(operator.business_name ?? "Us");
-      }
+    if (operator) {
+      operatorId = operator.id;
+      operatorLabel = operator.business_name ?? "operator";
+      replyMessage = operator.custom_sms_message?.trim()
+        ? operator.custom_sms_message.trim()
+        : buildDefaultMessage(operator.business_name ?? "Us");
     }
 
     // Send auto-reply SMS
@@ -62,7 +72,6 @@ export async function POST(req: NextRequest) {
       });
       console.log(`[${operatorLabel}] Missed-call SMS sent to ${callerNumber}`);
     } catch (err) {
-      // Log the error but don't crash — TwiML response must always be returned
       console.error(
         `[${operatorLabel}] Missed-call SMS failed:`,
         err instanceof Error ? err.message : err

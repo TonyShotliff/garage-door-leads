@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import { normalizePhone } from "@/lib/phone";
 
 export async function POST(req: NextRequest) {
   const cookieStore = cookies();
@@ -37,7 +38,16 @@ export async function POST(req: NextRequest) {
   // Build update payload from whatever fields were sent — all are optional
   const payload: Record<string, string | null> = {};
   if (businessName !== undefined) payload.business_name = businessName;
-  if (businessPhone !== undefined) payload.business_phone = businessPhone;
+  if (businessPhone !== undefined) {
+    const normalizedPhone = normalizePhone(businessPhone);
+    if (!normalizedPhone) {
+      return NextResponse.json(
+        { error: "That doesn't look like a valid US phone number. Please double check it." },
+        { status: 400 }
+      );
+    }
+    payload.business_phone = normalizedPhone;
+  }
   // Empty string → null so we fall back to the default message in the webhook
   if (customSmsMessage !== undefined) payload.custom_sms_message = customSmsMessage || null;
 

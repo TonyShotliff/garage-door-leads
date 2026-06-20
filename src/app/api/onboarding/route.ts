@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+import { normalizePhone } from "@/lib/phone";
 
 export async function POST(req: NextRequest) {
   const { businessName, businessPhone, email } = await req.json();
@@ -8,6 +9,14 @@ export async function POST(req: NextRequest) {
   if (!businessName || !businessPhone || !email) {
     return NextResponse.json(
       { error: "Business name, phone number, and email are required." },
+      { status: 400 }
+    );
+  }
+
+  const normalizedPhone = normalizePhone(businessPhone);
+  if (!normalizedPhone) {
+    return NextResponse.json(
+      { error: "That doesn't look like a valid US phone number. Please double check it." },
       { status: 400 }
     );
   }
@@ -21,7 +30,7 @@ export async function POST(req: NextRequest) {
     {
       email,
       business_name: businessName,
-      business_phone: businessPhone,
+      business_phone: normalizedPhone,
       status: "active",
     },
     { onConflict: "email" }
