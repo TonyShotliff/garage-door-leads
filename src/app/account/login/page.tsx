@@ -38,10 +38,10 @@ export default function LoginPage() {
 
   if (sent) {
     return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-10 py-12 max-w-md w-full text-center">
-          <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <main className="min-h-screen bg-[#F4F1E8] flex items-center justify-center px-4">
+        <div className="bg-white rounded-2xl px-10 py-12 max-w-md w-full text-center">
+          <div className="w-14 h-14 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg className="w-7 h-7 text-[#D85A30]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </div>
@@ -52,7 +52,7 @@ export default function LoginPage() {
           </p>
           <button
             onClick={() => setSent(false)}
-            className="mt-6 text-sm text-blue-600 hover:underline"
+            className="mt-6 text-sm text-[#993C1D] hover:underline"
           >
             Use a different email
           </button>
@@ -62,10 +62,10 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-10 py-12 max-w-md w-full">
+    <main className="min-h-screen bg-[#F4F1E8] flex items-center justify-center px-4">
+      <div className="bg-white rounded-2xl px-10 py-12 max-w-md w-full">
         <div className="text-center mb-8">
-          <span className="text-2xl font-bold text-blue-600 tracking-tight">Insta Intake</span>
+          <span className="text-2xl font-bold text-gray-900 tracking-tight">Insta Intake</span>
           <h1 className="text-2xl font-bold text-gray-900 mt-4 mb-1">Sign in to your account</h1>
           <p className="text-gray-500 text-sm">We&apos;ll email you a link — no password required.</p>
         </div>
@@ -87,7 +87,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="you@example.com"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D85A30] focus:border-transparent transition"
             />
           </div>
 
@@ -100,7 +100,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition shadow-sm"
+            className="w-full bg-[#D85A30] hover:bg-[#c14d26] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition"
           >
             {loading ? "Sending..." : "Send Login Link"}
           </button>

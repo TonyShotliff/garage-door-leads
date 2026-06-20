@@ -33,15 +33,15 @@ function formatTime(iso: string) {
 function DirectionBadge({ direction }: { direction: "inbound" | "outbound" }) {
   if (direction === "outbound") {
     return (
-      <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full">
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
+      <span className="inline-flex items-center gap-1 bg-orange-100 text-[#993C1D] text-xs font-semibold px-2.5 py-1 rounded-full">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#D85A30] inline-block" />
         Sent
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-full">
-      <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
+    <span className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block" />
       Reply
     </span>
   );
@@ -54,7 +54,7 @@ type StepState = "complete" | "current" | "upcoming";
 function StepIcon({ state }: { state: StepState }) {
   if (state === "complete") {
     return (
-      <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+      <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0">
         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
         </svg>
@@ -63,7 +63,7 @@ function StepIcon({ state }: { state: StepState }) {
   }
   if (state === "current") {
     return (
-      <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0">
+      <div className="w-8 h-8 rounded-full bg-[#D85A30] flex items-center justify-center flex-shrink-0">
         <div className="w-2.5 h-2.5 rounded-full bg-white" />
       </div>
     );
@@ -99,16 +99,15 @@ function SetupProgress({ status }: { status: string | null }) {
   ];
 
   return (
-    <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+    <section className="bg-white rounded-2xl p-6">
       <h2 className="text-lg font-semibold text-gray-900 mb-5">Setup Progress</h2>
       <div className="flex items-start gap-0">
         {steps.map((step, i) => (
           <div key={step.label} className="flex-1 flex flex-col items-center relative">
-            {/* Connector line left */}
             {i > 0 && (
               <div
                 className={`absolute top-4 right-1/2 w-full h-0.5 -translate-y-1/2 ${
-                  steps[i - 1].state === "complete" ? "bg-green-300" : "bg-gray-200"
+                  steps[i - 1].state === "complete" ? "bg-emerald-300" : "bg-gray-200"
                 }`}
                 style={{ left: "-50%", width: "100%" }}
               />
@@ -137,16 +136,15 @@ function SetupProgress({ status }: { status: string | null }) {
 
 function SmsPreview({ message }: { message: string }) {
   return (
-    <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+    <section className="bg-white rounded-2xl p-6">
       <h2 className="text-lg font-semibold text-gray-900 mb-1">What your customers receive</h2>
       <p className="text-sm text-gray-500 mb-5">
         This message is sent automatically the moment you miss a call.
       </p>
 
-      {/* Phone mockup */}
-      <div className="bg-gray-50 rounded-xl px-4 py-5">
+      <div className="bg-[#F4F1E8] rounded-xl px-4 py-5">
         <div className="flex justify-start">
-          <div className="max-w-[80%] bg-gray-200 text-gray-900 text-sm leading-relaxed px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm">
+          <div className="max-w-[80%] bg-gray-200 text-gray-900 text-sm leading-relaxed px-4 py-3 rounded-2xl rounded-tl-sm">
             {message}
           </div>
         </div>
@@ -198,25 +196,23 @@ function ForwardingInstructions() {
   }
 
   return (
-    <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+    <section className="bg-white rounded-2xl p-6">
       <h2 className="text-lg font-semibold text-gray-900 mb-1">How to activate on your phone</h2>
       <p className="text-sm text-gray-500 mb-2">
         Insta Intake works when your business calls forward to your Insta Intake number on no-answer.
         Here&apos;s how to set it up:
       </p>
 
-      {/* Number callout */}
-      <div className="flex items-center gap-3 bg-blue-50 rounded-xl px-4 py-3 mb-5">
-        <svg className="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="flex items-center gap-3 bg-orange-50 rounded-xl px-4 py-3 mb-5">
+        <svg className="w-5 h-5 text-[#993C1D] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
         </svg>
         <div>
-          <p className="text-xs text-blue-600 font-medium uppercase tracking-wide">Your Insta Intake number</p>
-          <p className="text-blue-900 font-bold text-lg tracking-wide">{INSTA_INTAKE_NUMBER}</p>
+          <p className="text-xs text-[#993C1D] font-medium uppercase tracking-wide">Your Insta Intake number</p>
+          <p className="text-[#4A1B0C] font-bold text-lg tracking-wide">{INSTA_INTAKE_NUMBER}</p>
         </div>
       </div>
 
-      {/* Accordion */}
       <div className="space-y-2">
         {FORWARDING_INSTRUCTIONS.map(({ id, label, steps }) => (
           <div key={id} className="border border-gray-100 rounded-xl overflow-hidden">
@@ -238,7 +234,7 @@ function ForwardingInstructions() {
               <div className="px-4 pb-4 space-y-2">
                 {steps.map((step, i) => (
                   <div key={i} className="flex gap-2.5">
-                    <span className="text-blue-500 font-bold text-xs mt-0.5 flex-shrink-0">{i + 1}.</span>
+                    <span className="text-[#993C1D] font-bold text-xs mt-0.5 flex-shrink-0">{i + 1}.</span>
                     <p className="text-sm text-gray-600 leading-relaxed">{step}</p>
                   </div>
                 ))}
@@ -284,7 +280,6 @@ export default function AccountContent({
 
   const isActive = operator?.status === "active" || operator?.status === "live";
 
-  // What customers will actually receive — custom message takes priority
   const displayName = businessName.trim() || "Your Business";
   const defaultSmsText = `Hi, this is ${displayName}. Sorry we missed your call — how can we help? Reply here and we'll get right back to you. Reply STOP to opt out.`;
   const previewMessage = customSmsMessage.trim() ? customSmsMessage.trim() : defaultSmsText;
@@ -360,11 +355,10 @@ export default function AccountContent({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Nav */}
-      <nav className="border-b border-gray-100 bg-white px-6 py-4">
+    <div className="min-h-screen bg-[#F4F1E8]">
+      <nav className="border-b border-gray-200 bg-white px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <span className="text-xl font-bold text-blue-600 tracking-tight">Insta Intake</span>
+          <span className="text-xl font-bold text-gray-900 tracking-tight">Insta Intake</span>
           <button
             onClick={handleSignOut}
             className="text-sm text-gray-500 hover:text-gray-700 transition"
@@ -376,7 +370,6 @@ export default function AccountContent({
 
       <main className="max-w-3xl mx-auto px-6 py-10 space-y-8">
 
-        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
@@ -387,20 +380,18 @@ export default function AccountContent({
           <span
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold ${
               isActive
-                ? "bg-green-100 text-green-700"
-                : "bg-yellow-100 text-yellow-700"
+                ? "bg-emerald-100 text-emerald-700"
+                : "bg-amber-100 text-amber-700"
             }`}
           >
-            <span className={`w-2 h-2 rounded-full ${isActive ? "bg-green-500" : "bg-yellow-500"}`} />
+            <span className={`w-2 h-2 rounded-full ${isActive ? "bg-emerald-600" : "bg-amber-500"}`} />
             {isActive ? "Active" : "Pending Setup"}
           </span>
         </div>
 
-        {/* 1 — Setup progress */}
         <SetupProgress status={operator?.status ?? null} />
 
-        {/* 2 — Business profile */}
-        <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <section className="bg-white rounded-2xl p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-5">Business Profile</h2>
           <form onSubmit={handleSaveProfile} className="space-y-4">
             <div>
@@ -410,7 +401,7 @@ export default function AccountContent({
                 value={businessName}
                 onChange={(e) => setBusinessName(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#D85A30] focus:border-transparent transition"
               />
             </div>
             <div>
@@ -420,7 +411,7 @@ export default function AccountContent({
                 value={businessPhone}
                 onChange={(e) => setBusinessPhone(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#D85A30] focus:border-transparent transition"
               />
             </div>
 
@@ -428,12 +419,12 @@ export default function AccountContent({
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm shadow-sm"
+                className="bg-[#D85A30] hover:bg-[#c14d26] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm"
               >
                 {saving ? "Saving..." : "Save Changes"}
               </button>
               {saveStatus === "saved" && (
-                <span className="text-sm text-green-600 font-medium">Saved!</span>
+                <span className="text-sm text-emerald-700 font-medium">Saved!</span>
               )}
               {saveStatus === "error" && (
                 <span className="text-sm text-red-600">{saveError}</span>
@@ -442,8 +433,7 @@ export default function AccountContent({
           </form>
         </section>
 
-        {/* 3 — Customize SMS message */}
-        <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <section className="bg-white rounded-2xl p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-1">Customize Your Message</h2>
           <p className="text-sm text-gray-500 mb-4">
             Personalize the text your customers receive when you miss their call.
@@ -460,11 +450,11 @@ export default function AccountContent({
                 placeholder={defaultSmsText}
                 rows={3}
                 maxLength={320}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none text-sm"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D85A30] focus:border-transparent transition resize-none text-sm"
               />
               <p
                 className={`text-xs mt-1 text-right ${
-                  customSmsMessage.length > 160 ? "text-amber-500 font-medium" : "text-gray-400"
+                  customSmsMessage.length > 160 ? "text-amber-600 font-medium" : "text-gray-400"
                 }`}
               >
                 {customSmsMessage.length} / 160
@@ -475,12 +465,12 @@ export default function AccountContent({
               <button
                 type="submit"
                 disabled={savingMessage}
-                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm shadow-sm"
+                className="bg-[#D85A30] hover:bg-[#c14d26] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm"
               >
                 {savingMessage ? "Saving..." : "Save Message"}
               </button>
               {messageSaveStatus === "saved" && (
-                <span className="text-sm text-green-600 font-medium">Saved!</span>
+                <span className="text-sm text-emerald-700 font-medium">Saved!</span>
               )}
               {messageSaveStatus === "error" && (
                 <span className="text-sm text-red-600">{messageSaveError}</span>
@@ -489,14 +479,11 @@ export default function AccountContent({
           </form>
         </section>
 
-        {/* 4 — SMS preview (live-updates as operator types) */}
         <SmsPreview message={previewMessage} />
 
-        {/* 5 — Call forwarding instructions */}
         <ForwardingInstructions />
 
-        {/* 6 — Subscription */}
-        <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <section className="bg-white rounded-2xl p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-1">Subscription</h2>
           <p className="text-sm text-gray-500 mb-4">
             Manage billing, update your payment method, or cancel.
@@ -506,7 +493,7 @@ export default function AccountContent({
               <button
                 onClick={handleManageSubscription}
                 disabled={portalLoading}
-                className="bg-gray-900 hover:bg-gray-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm shadow-sm"
+                className="bg-gray-900 hover:bg-gray-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm"
               >
                 {portalLoading ? "Loading..." : "Manage Subscription"}
               </button>
@@ -519,13 +506,12 @@ export default function AccountContent({
           )}
         </section>
 
-        {/* 7 — Activity log */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-1">Recent Activity</h2>
           <p className="text-sm text-gray-500 mb-5">Missed calls and customer replies</p>
 
           {messages.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-8 py-12 text-center">
+            <div className="bg-white rounded-2xl px-8 py-12 text-center">
               <p className="text-gray-500 font-medium">No activity yet</p>
               <p className="text-gray-400 text-sm mt-1">
                 Messages will appear here once the missed-call flow is active.
@@ -546,7 +532,7 @@ export default function AccountContent({
                         <div className="h-px flex-1 bg-gray-200" />
                       </div>
                     )}
-                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4">
+                    <div className="bg-white rounded-xl px-5 py-4">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1.5">
