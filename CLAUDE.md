@@ -201,15 +201,24 @@ rejection reason first.
 ## Next priorities
 1. When A2P clears: run activation checklist above, full end-to-end live
    test
-2. Restyle /admin, /demo, /success, /dashboard to match new design system
+2. Self-service "I've set up call forwarding" button on /account — lets
+   operators flip their own status to 'live' instead of requiring Tony to
+   manually do it in Supabase for every signup. Doesn't verify forwarding
+   actually works, just removes the manual bottleneck. Worth building
+   before onboarding more than a couple of operators, since the current
+   process doesn't scale past hand-holding each one individually. A
+   stronger future version would be a "send me a test call" feature that
+   actually verifies forwarding works before auto-flipping status — bigger
+   build, not needed yet.
+3. Restyle /admin, /demo, /success, /dashboard to match new design system
    (lower priority — not public sales funnel)
-3. Operator auth email branding — Supabase sends from "Supabase Auth",
+4. Operator auth email branding — Supabase sends from "Supabase Auth",
    needs custom SMTP (requires paid Supabase plan, ~$25/mo). Low priority
    until real customers exist.
-4. Wisconsin LLC formation → update Stripe business profile, re-run
+5. Wisconsin LLC formation → update Stripe business profile, re-run
    Twilio A2P brand registration under new EIN — schedule for
    low-customer-impact window
-5. Operator outreach — no outreach has started yet. Product is
+6. Operator outreach — no outreach has started yet. Product is
    feature-complete pending Twilio; outreach strategy is now the
    higher-leverage open question.
 
