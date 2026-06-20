@@ -151,5 +151,44 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Send call forwarding setup email — separate from welcome email so the action is clear
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: "tony@instaintake.com",
+      to: email,
+      subject: "One step left: forward your missed calls",
+      html: `
+        <div style="font-family:-apple-system,sans-serif;max-width:520px;margin:0 auto;padding:24px;">
+          <p style="font-size:16px;color:#111827;">Hi ${businessName},</p>
+          <p style="font-size:15px;color:#374151;line-height:1.6;">
+            To start catching missed calls, you'll need to set up conditional call
+            forwarding on your business phone. This only forwards calls you don't
+            answer — your phone still rings normally first.
+          </p>
+          <p style="font-size:15px;color:#111827;font-weight:600;margin-top:20px;">
+            Forward to this number: +1 (844) 252-4470
+          </p>
+          <p style="font-size:15px;color:#111827;font-weight:600;margin-top:20px;">How to set it up:</p>
+          <table cellpadding="0" cellspacing="0" style="margin:16px 0;">
+            <tr><td style="padding:6px 0;font-size:14px;color:#374151;"><strong>Verizon:</strong> dial *7118442524470 and press Call (no # at the end)</td></tr>
+            <tr><td style="padding:6px 0;font-size:14px;color:#374151;"><strong>AT&amp;T / T-Mobile:</strong> dial *61*18442524470# and press Call</td></tr>
+            <tr><td style="padding:6px 0;font-size:14px;color:#374151;"><strong>Other carriers:</strong> call your carrier's support line and ask them to set up "conditional call forwarding on no-answer" to +18442524470</td></tr>
+          </table>
+          <p style="font-size:14px;color:#6b7280;line-height:1.6;">
+            You should hear a confirmation tone after dialing the code. Full instructions
+            with more detail are also available any time on your
+            <a href="https://www.instaintake.com/account" style="color:#2563eb;">account page</a>.
+          </p>
+        </div>
+      `,
+    });
+  } catch (setupEmailErr) {
+    console.error(
+      "Call forwarding setup email failed:",
+      setupEmailErr instanceof Error ? setupEmailErr.message : setupEmailErr
+    );
+  }
+
   return NextResponse.json({ success: true });
 }
