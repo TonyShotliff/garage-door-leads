@@ -189,8 +189,26 @@ const FORWARDING_INSTRUCTIONS: { id: PhoneType; label: string; steps: string[] }
   },
 ];
 
-function ForwardingInstructions() {
+function ForwardingInstructions({ status }: { status: string | null }) {
   const [open, setOpen] = useState<PhoneType | null>(null);
+  const [confirming, setConfirming] = useState(false);
+  const [confirmed, setConfirmed] = useState(status === "live");
+  const [confirmError, setConfirmError] = useState<string | null>(null);
+
+  async function handleConfirmForwarding() {
+    setConfirming(true);
+    setConfirmError(null);
+    try {
+      const res = await fetch("/api/account/confirm-forwarding", { method: "POST" });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setConfirmed(true);
+    } catch (err) {
+      setConfirmError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setConfirming(false);
+    }
+  }
 
   function toggle(id: PhoneType) {
     setOpen((prev) => (prev === id ? null : id));
@@ -248,6 +266,33 @@ function ForwardingInstructions() {
       <p className="text-xs text-gray-400 mt-4 leading-relaxed">
         Only forwards when you don&apos;t answer — your phone still rings normally first.
       </p>
+
+      <div className="mt-5 pt-5 border-t border-gray-100">
+        {confirmed ? (
+          <div className="flex items-center gap-2 text-emerald-700 text-sm font-medium">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+            Call forwarding confirmed — you&apos;re live
+          </div>
+        ) : (
+          <>
+            <button
+              onClick={handleConfirmForwarding}
+              disabled={confirming}
+              className="bg-gray-900 hover:bg-gray-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm"
+            >
+              {confirming ? "Confirming..." : "I've set up call forwarding"}
+            </button>
+            <p className="text-xs text-gray-400 mt-2">
+              Click this once you&apos;ve completed the steps above and heard the confirmation tone.
+            </p>
+            {confirmError && (
+              <p className="text-sm text-red-600 mt-2">{confirmError}</p>
+            )}
+          </>
+        )}
+      </div>
     </section>
   );
 }
@@ -482,7 +527,7 @@ export default function AccountContent({
 
         <SmsPreview message={previewMessage} />
 
-        <ForwardingInstructions />
+        <ForwardingInstructions status={operator?.status ?? null} />
 
         <section className="bg-white rounded-2xl p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-1">Subscription</h2>
