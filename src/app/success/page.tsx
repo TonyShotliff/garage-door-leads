@@ -10,11 +10,11 @@ export default function SuccessPage({
     : "/onboarding";
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-md p-10 max-w-md w-full text-center">
+    <main className="min-h-screen bg-[#F4F1E8] flex items-center justify-center px-4">
+      <div className="bg-white rounded-2xl p-10 max-w-md w-full text-center">
         <div className="flex justify-center mb-4">
-          <div className="bg-green-100 rounded-full p-4">
-            <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-emerald-50 rounded-full p-4">
+            <svg className="w-10 h-10 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -26,7 +26,7 @@ export default function SuccessPage({
         </p>
         <Link
           href={onboardingHref}
-          className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition text-sm"
+          className="inline-block bg-[#D85A30] hover:bg-[#c14d26] text-white font-semibold px-6 py-3 rounded-xl transition text-sm"
         >
           Complete Your Setup →
         </Link>
