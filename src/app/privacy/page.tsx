@@ -34,7 +34,8 @@ export default function PrivacyPolicy() {
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">5. Data Sharing</h2>
-        <p>We do not sell your personal information. We may share data with service providers necessary to operate our platform, including Twilio for SMS delivery and Stripe for payment processing.</p>
+        <p className="mb-3">We do not sell your personal information. We may share data with service providers necessary to operate our platform, including Twilio for SMS delivery and Stripe for payment processing.</p>
+        <p>All categories of data described in this policy exclude text messaging originator opt-in data and consent. This information will not be shared with any third parties or affiliates for marketing or promotional purposes.</p>
       </section>
 
       <section className="mb-8">
