@@ -33,6 +33,9 @@ export default function Contact() {
         <div>
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Phone</h2>
           <a href="tel:+18442524470" className="text-gray-900 font-medium hover:underline">+1 (844) 252-4470</a>
+          <p className="text-sm text-gray-700 mt-1 leading-relaxed">
+            By calling this number, you may receive an automated SMS reply if your call is missed. Message and data rates may apply. Reply <strong>STOP</strong> to opt out, or <strong>HELP</strong> for help.
+          </p>
         </div>
 
         <div>
